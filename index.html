@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mayank Singh - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --dark: #0f0f23;
+            --light: #ffffff;
+            --gray: #6b7280;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, #1a1a2e 50%, #16213e 100%);
+            color: var(--light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: var(--gray);
+            margin-bottom: 40px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 16px 40px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: var(--light);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Sections */
+        .section {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section h2 {
+            font-size: 3rem;
+            margin-bottom: 60px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--light), var(--gray));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .project-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .project-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--light);
+        }
+
+        .project-card p {
+            color: var(--gray);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tech-tag {
+            padding: 4px 12px;
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--primary);
+        }
+
+        .project-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .project-link {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-link:hover {
+            background: var(--primary);
+            color: var(--light);
+        }
+
+        /* Skills */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .skill-category {
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-5px);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .skill-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .skill-category h3 {
+            margin-bottom: 15px;
+            color: var(--light);
+        }
+
+        .skill-list {
+            list-style: none;
+            color: var(--gray);
+        }
+
+        .skill-list li {
+            margin-bottom: 8px;
+        }
+
+        /* Contact */
+        .contact-container {
+            text-align: center;
+            padding: 60px 40px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            margin-top: 60px;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            background: var(--primary);
+            color: var(--light);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav {
+                position: relative;
+                top: 20px;
+                right: auto;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .hero {
+                padding-top: 100px;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background -->
+    <div class="particles" id="particles"></div>
+
+            <!-- Navigation -->
+    <nav class="nav">
+        <a href="#about" class="nav-item">About</a>
+        <a href="#experience" class="nav-item">Experience</a>
+        <a href="#projects" class="nav-item">Projects</a>
+        <a href="#skills" class="nav-item">Skills</a>
+        <a href="#contact" class="nav-item">Contact</a>
+        <a href="May_resume_AUG.pdf" class="nav-item" target="_blank">Resume</a>
+    </nav>
+
+            <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Mayank Singh</h1>
+            <p>Computer Science Student & AI Research Developer</p>
+            <div style="margin: 20px 0; color: var(--gray);">
+                <p> mayank.goa@gmail.com |  814-418-8274</p>
+            </div>
+            <a href="#projects" class="cta-button">Explore My Work</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section fade-in">
+        <h2>About Me</h2>
+        <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+            <div style="background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 40px; margin-bottom: 40px;">
+                <h3 style="color: var(--light); margin-bottom: 20px; font-size: 1.5rem;">Professional Summary</h3>
+                <p style="font-size: 1.1rem; color: var(--gray); line-height: 1.8;">
+                    Detail-oriented Computer Science student at Penn State with hands-on experience in software development, 
+                    AI research, and backend systems. Skilled in Python, Java, SQL, and modern development frameworks. 
+                    Passionate about applying AI for real-world impact with a strong focus on ethical design and user-centric systems.
+                </p>
+            </div>
+            <div style="background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 40px;">
+                <h3 style="color: var(--light); margin-bottom: 20px; font-size: 1.5rem;"> Education</h3>
+                <div style="text-align: left;">
+                    <h4 style="color: var(--primary); font-size: 1.2rem; margin-bottom: 10px;">Pennsylvania State University, State College, PA</h4>
+                    <p style="color: var(--light); margin-bottom: 10px;"><strong>Bachelor of Science in Computer Science</strong> | July 2025</p>
+                    <p style="color: var(--gray); font-size: 1rem;">
+                        <strong>Relevant Courses:</strong> Data Structure and Algorithms, Database Management Systems, 
+                        Operating Systems Design, Machine Learning
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="section fade-in">
+        <h2>Professional Experience</h2>
+        <div style="max-width: 900px; margin: 0 auto;">
+            <div class="project-card" style="margin-bottom: 30px;">
+                <div style="display: flex; justify-content: between; align-items: start; margin-bottom: 15px;">
+                    <div>
+                        <h3 style="color: var(--primary); margin-bottom: 5px;">Penn State Research — ReSENSE Lab</h3>
+                        <p style="color: var(--gray); margin: 0; font-size: 0.9rem;"><strong>State College, PA | May 2025 – Present</strong></p>
+                    </div>
+                </div>
+                <ul style="color: var(--gray); margin-bottom: 20px; padding-left: 20px;">
+                    <li>Developing a GenAI-powered platform for generating personalized content across education, marketing, and support domains</li>
+                    <li>Leveraging multimodal AI (language + vision models) to automate creative workflows and optimize real-time user interaction</li>
+                    <li>Ensuring ethical AI practices through transparency, human-in-the-loop feedback, and sector-specific customization</li>
+                </ul>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Streamlit</span>
+                    <span class="tech-tag">Generative AI</span>
+                    <span class="tech-tag">System Architecture</span>
+                    <span class="tech-tag">UI/UX</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div style="display: flex; justify-content: between; align-items: start; margin-bottom: 15px;">
+                    <div>
+                        <h3 style="color: var(--primary); margin-bottom: 5px;">Research Assistant – Hybrid AI for Early Diabetes Detection</h3>
+                        <p style="color: var(--gray); margin: 0; font-size: 0.9rem;"><strong>State College, PA | Jan 2025 – May 2025</strong></p>
+                    </div>
+                </div>
+                <ul style="color: var(--gray); margin-bottom: 20px; padding-left: 20px;">
+                    <li>Designed a dual-model system using Random Forest and ACT-R for diabetes risk prediction</li>
+                    <li>Built an interactive Streamlit app comparing ML and cognitive predictions with visual outputs</li>
+                    <li>Integrated fairness-aware logic, case-based reasoning, and ethical diagnostic principles</li>
+                </ul>
+                <div class="project-tech">
+                    <span class="tech-tag">Streamlit</span>
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">ACT-R</span>
+                    <span class="tech-tag">Random Forest</span>
+                    <span class="tech-tag">Machine Learning</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section fade-in">
+        <h2>Featured Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <h3>Automated Job Application System</h3>
+                <p>Built an automation pipeline to scrape job listings from Indeed using Ampify actors and filter them via GPT-based relevance. Generated personalized cover letters using GPT and automatically applied it to Google Sheets with status tracking.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">n8n</span>
+                    <span class="tech-tag">GPT-4.0 Mini</span>
+                    <span class="tech-tag">Ampify Web Scraper</span>
+                    <span class="tech-tag">Google Sheets API</span>
+                </div>
+                <div class="project-links">
+                    <a href="https://github.com/MayankSingh6" target="_blank" class="project-link">GitHub</a>
+                    
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3>AI WhatsApp Chatbot</h3>
+                <p>Created an AI-powered chatbot capable of dynamic and contextual replies to WhatsApp messages along with describing images. Enabled session-aware interactions and real-time communication using GPT and Messenger Send node.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">n8n</span>
+                    <span class="tech-tag">GPT-4.0 Mini</span>
+                    <span class="tech-tag">WhatsApp Cloud API</span>
+                    <span class="tech-tag">Webhooks</span>
+                </div>
+                <div class="project-links">
+                    <a href="https://github.com/MayankSingh6" target="_blank" class="project-link">GitHub</a>
+                    
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3>Audio-to-Image Generation App</h3>
+                <p>Developed a Streamlit app that converts spoken audio into AI-generated images using Whisper for transcription and DALL·E for image synthesis. Features real-time audio processing and dynamic image generation.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Streamlit</span>
+                    <span class="tech-tag">OpenAI Whisper</span>
+                    <span class="tech-tag">DALL·E</span>
+                </div>
+                <div class="project-links">
+                    <a href="https://github.com/MayankSingh6" target="_blank" class="project-link">GitHub</a>
+                    
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3>Image Caption Generator</h3>
+                <p>Built an AI tool that generates descriptive captions for images using BLIP and Hugging Face Transformers. Deployed a responsive Streamlit interface for real-time caption output with batch processing capabilities.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Hugging Face</span>
+                    <span class="tech-tag">BLIP</span>
+                    <span class="tech-tag">Streamlit</span>
+                </div>
+                <div class="project-links">
+                    <a href="https://github.com/MayankSingh6" target="_blank" class="project-link">GitHub</a>
+                    
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3>University Course Registration System</h3>
+                <p>Developed a comprehensive course registration system with functionalities for course selection, enrollment, and conflict checking. Included features for transactional integrity, report generation, and rollback handling.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">SQL</span>
+                    <span class="tech-tag">PostgreSQL</span>
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Database Design</span>
+                </div>
+                <div class="project-links">
+                    <a href="https://github.com/MayankSingh6" target="_blank" class="project-link">GitHub</a>
+                    
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3>Inventory Management Microservices System</h3>
+                <p>Designed a microservices-based inventory system where services handled cataloging, orders, and notifications. Ensured inter-service communication via REST APIs and deployed using Docker containers.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">REST API</span>
+                    <span class="tech-tag">Docker</span>
+                    <span class="tech-tag">Microservices</span>
+                    <span class="tech-tag">Java</span>
+                </div>
+                <div class="project-links">
+                    <a href="https://github.com/MayankSingh6" target="_blank" class="project-link">GitHub</a>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section fade-in">
+        <h2>Technical Skills</h2>
+        <div class="skills-container">
+            <div class="skill-category">
+                <div class="skill-icon"></div>
+                <h3>Programming Languages</h3>
+                <ul class="skill-list">
+                    <li>Python</li>
+                    <li>Java</li>
+                    <li>C</li>
+                    <li>C++</li>
+                    <li>SQL</li>
+                </ul>
+            </div>
+
+            <div class="skill-category">
+                <div class="skill-icon"></div>
+                <h3>Frameworks & Tools</h3>
+                <ul class="skill-list">
+                    <li>Streamlit</li>
+                    <li>Docker</li>
+                    <li>Spring Cloud</li>
+                    <li>REST APIs</li>
+                    <li>GitHub</li>
+                    <li>Apache</li>
+                </ul>
+            </div>
+
+            <div class="skill-category">
+                <div class="skill-icon"></div>
+                <h3>Databases</h3>
+                <ul class="skill-list">
+                    <li>MySQL</li>
+                    <li>SQL Server</li>
+                    <li>PostgreSQL</li>
+                    <li>Database Design</li>
+                    <li>Query Optimization</li>
+                </ul>
+            </div>
+
+            <div class="skill-category">
+                <div class="skill-icon"></div>
+                <h3>AI & Machine Learning</h3>
+                <ul class="skill-list">
+                    <li>Generative AI</li>
+                    <li>OpenAI APIs</li>
+                    <li>Random Forest</li>
+                    <li>Hugging Face</li>
+                    <li>Computer Vision</li>
+                </ul>
+            </div>
+
+            <div class="skill-category">
+                <div class="skill-icon"></div>
+                <h3>Software Development</h3>
+                <ul class="skill-list">
+                    <li>Test-driven Development</li>
+                    <li>Application Deployment</li>
+                    <li>Debugging</li>
+                    <li>Microservices</li>
+                    <li>System Architecture</li>
+                </ul>
+            </div>
+
+            <div class="skill-category">
+                <div class="skill-icon"></div>
+                <h3>Soft Skills</h3>
+                <ul class="skill-list">
+                    <li>Analytical Thinking</li>
+                    <li>Effective Communication</li>
+                    <li>Team Collaboration</li>
+                    <li>Problem Solving</li>
+                    <li>Research & Development</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section fade-in">
+        <h2>Get In Touch</h2>
+        <div class="contact-container">
+            <p style="font-size: 1.2rem; color: var(--gray); margin-bottom: 20px;">
+                I'm always open to discussing new opportunities and interesting projects.
+            </p>
+            <div class="contact-links">
+                <a href="mailto:mayank.goa@gmail.com" class="contact-link">
+                    <span></span>
+                    <span>mayank.goa@gmail.com</span>
+                </a>
+                <a href="tel:814-418-8274" class="contact-link">
+                    <span></span>
+                    <span>814-418-8274</span>
+                </a>
+                <a href="https://linkedin.com/in/mayank-singh-011536230" class="contact-link" target="_blank">
+                    <span></span>
+                    <span>LinkedIn</span>
+                </a>
+                <a href="https://github.com/MayankSingh6" class="contact-link" target="_blank">
+                    <span></span>
+                    <span>GitHub</span>
+                </a>
+            
+                <a href="May_resume_AUG.pdf" class="contact-link" target="_blank">Resume (PDF)</a></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Mayank Singh. Built with passion and creativity.</p>
+    </footer>
+
+    <script>
+        // Animated particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Interactive project cards
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) rotateX(5deg)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) rotateX(0)';
+            });
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${rate}px)`;
+            }
+        });
+
+        // Initialize
+        createParticles();
+        
+        // Add some dynamic color changes
+        setInterval(() => {
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach(particle => {
+                const colors = ['#6366f1', '#8b5cf6', '#ec4899', '#06b6d4', '#10b981'];
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            });
+        }, 3000);
+    </script>
+</body>
+</html>
